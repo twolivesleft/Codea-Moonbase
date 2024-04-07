@@ -3,13 +3,8 @@ services:
     moonbase:
         build: ./app
         environment:
-            # For push notifications (https://pushover.net)
-            - CCR_PUSHOVER_APP_KEY=
-            - CCR_PUSHOVER_GROUP_KEY=
-            # Admin key used for project approvals (Simple string)
-            - CCR_ADMIN_KEY=Change-Me-Please
-            # WebRepo Bot API Key (Codea Forum Key)
-            - CCR_DISCOURSE_API_KEY=
+            # Moonbase Bot API Key (Codea Forum Key)
+            - DISCOURSE_API_KEY=
         volumes:
             - ./app/repo:/app/repo:rw
         restart: always
