@@ -183,14 +183,9 @@ ${metadata.category} for ${metadata.platform}.
 		// Increment revision number & append to post
 		rev_manifest[metadata.name].versions[metadata.version].revision++;
 		postContent += `\n\n---\nrevision #${rev_manifest[metadata.name].versions[metadata.version].revision}`
-		
 		forum.EditPost(rev_manifest[metadata.name].versions[metadata.version].postId, postContent);
 
-		// TODO: Remove temporary correction
-		if (rev_manifest[metadata.name].versions[metadata.version].revision === undefined){
-			rev_manifest[metadata.name].versions[metadata.version].revision = 1;
-		}
-
+		// Write manifest changes to disk
 		WriteManifest("review", rev_manifest);
 		
 	} else {
