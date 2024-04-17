@@ -220,7 +220,7 @@ ${metadata.category} for ${metadata.platform}.
 
 		// Add version, postId & revision to manifest
 		rev_manifest[metadata.name].versions.push({
-			id: metadata.version
+			id: metadata.version,
 			postId: postId,
 			revision: 1
 		});
@@ -316,7 +316,7 @@ async function OnWebhook(payload) {
 			const entry = rev_manifest[projectId];
 			if (entry.topicId == payload.like.post.topic_id) {
 				// Check the postId
-				for (const versionEntry in entry.versions) {
+				for (const versionEntry of entry.versions) {
 					if (versionEntry.postId == payload.like.post.id) {
 						project_name = projectId;
 						version = versionEntry.id;
