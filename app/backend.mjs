@@ -86,7 +86,9 @@ function IsExistingVersion(metadata) {
 	}
 
 	// Check for this specific version
-	return (metadata.version in manifest[metadata.name].versions);
+	return manifest[metadata.name].versions.some((v)=>{
+		return v.id == metadata.version;
+	});
 }
 
 function IsExistingSubmission(metadata) {
@@ -99,7 +101,9 @@ function IsExistingSubmission(metadata) {
 	}
 
 	// Check for this specific version
-	return metadata.version in manifest[metadata.name].versions;
+	return manifest[metadata.name].versions.some((v)=>{
+		return v.id == metadata.version;
+	});
 }
 
 async function GetAuthorMessage(authors) {
@@ -180,10 +184,14 @@ ${metadata.category} for ${metadata.platform}.
 	if (IsExistingSubmission(metadata)) {	
 		console.log("Revise existing approval request post.");
 
+		const version = rev_manifest[metadata.name].versions.find((v)=>{
+			return v.id == metadata.version;
+		});
+
 		// Increment revision number & append to post
-		rev_manifest[metadata.name].versions[metadata.version].revision++;
-		postContent += `\n\n---\nrevision #${rev_manifest[metadata.name].versions[metadata.version].revision}`
-		forum.EditPost(rev_manifest[metadata.name].versions[metadata.version].postId, postContent);
+		version.revision++;
+		postContent += `\n\n---\nrevision #${version.revision}`
+		forum.EditPost(version.postId, postContent);
 
 		// Write manifest changes to disk
 		WriteManifest("review", rev_manifest);
@@ -206,15 +214,16 @@ ${metadata.category} for ${metadata.platform}.
 			console.log("New review manifest entry");
 			rev_manifest[metadata.name] = {
 				topicId: topicId,
-				versions: {}
+				versions: []
 			}
 		}
 
 		// Add version, postId & revision to manifest
-		rev_manifest[metadata.name].versions[metadata.version] = {
+		rev_manifest[metadata.name].versions.push({
+			id: metadata.version
 			postId: postId,
 			revision: 1
-		}
+		});
 		
 		// Save review manifest
 		// console.log("Updated manifest -> " + JSON.stringify(rev_manifest, null, 2));
@@ -262,14 +271,22 @@ function OnApprove(manifest_entry, name, version) {
 	if (pub_manifest[name] === undefined) {
 		pub_manifest[name] = {
 			topicId: manifest_entry.topicId,
-			versions: {}
+			versions: []
 		};
 	}
+
+	const versionEntry = rev_manifest[name].versions.find((v)=>{
+		return v.id == version;
+	});
+	versionEntry.revision = undefined;
+	
 	// Move from review -> public
-	pub_manifest[name].versions[version] = rev_manifest[name].versions[version]
+	pub_manifest[name].versions.push(versionEntry);
 	// Remove from review manifest (if no other versions in review)
-	rev_manifest[name].versions[version] = undefined;
-	if (Object.keys(rev_manifest[name].versions).length == 0) {
+	rev_manifest[name].versions = rev_manifest[name].versions.filter((v)=>{
+		return v.id != version
+	});
+	if (rev_manifest[name].versions.length == 0) {
 		rev_manifest[name] = undefined;
 	}
 	WriteManifest("public", pub_manifest);
@@ -299,10 +316,10 @@ async function OnWebhook(payload) {
 			const entry = rev_manifest[projectId];
 			if (entry.topicId == payload.like.post.topic_id) {
 				// Check the postId
-				for (const versionId in entry.versions) {
-					if (entry.versions[versionId].postId == payload.like.post.id) {
+				for (const versionEntry in entry.versions) {
+					if (versionEntry.postId == payload.like.post.id) {
 						project_name = projectId;
-						version = versionId;
+						version = versionEntry.id;
 						isValidPost = true;
 						break;
 					} 
