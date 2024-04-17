@@ -255,7 +255,7 @@ function OnApprove(manifest_entry, name, version) {
 
 	// Update metadata timestamp
 	let metadata = JSON.parse(fs.readFileSync(project_path + "/metadata.json", 'utf-8'));
-	metadata.timestamp = 0; //  Math.floor(Date.now() / 1000);
+	metadata.timestamp = Math.floor(Date.now() / 1000);
 	fs.writeFileSync(project_path + "/metadata.json", JSON.stringify(metadata, null, 2));
 
 	// Update the project's icon link
