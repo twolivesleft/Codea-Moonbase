@@ -10,16 +10,90 @@ const __dirname = path.dirname(__filename);
 
 const HOST = process.env.HOST;
 
+function PublicBaseUrl() {
+	const host = HOST || "localhost";
+	return host.startsWith("http://") || host.startsWith("https://") ? host : `https://${host}`;
+}
+
 function WriteManifest(name, manifest) {
 	fs.writeFileSync(__dirname + `/repo/manifest-${name}.json`, JSON.stringify(manifest, null, 2));
 }
 
 function ReadManifest(name) {
-	return JSON.parse(fs.readFileSync( __dirname + `/repo/manifest-${name}.json`, 'utf8'));
+	const manifestPath = __dirname + `/repo/manifest-${name}.json`;
+	if (!fs.existsSync(manifestPath)) {
+		return {};
+	}
+
+	return JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
 }
 
 function StringIsAscii(str) {
 	return [...str].every((char) => char.codePointAt() <= 127);
+}
+
+function SafePathComponent(component) {
+	return encodeURIComponent(component).replace(/%2F/gi, "");
+}
+
+function LatestVersionEntry(entry) {
+	if (!entry?.versions?.length) {
+		return null;
+	}
+
+	return entry.versions[entry.versions.length - 1];
+}
+
+function ReadProjectMetadata(name, version) {
+	const metadataPath = path.join(__dirname, "repo", name, version, "metadata.json");
+	return JSON.parse(fs.readFileSync(metadataPath, "utf8"));
+}
+
+function ProjectIconUrl(name, version, metadata) {
+	const iconName = metadata.icon?.match(/[^\\/]+$/)?.[0];
+	if (!iconName) {
+		return null;
+	}
+
+	return `${PublicBaseUrl()}/${SafePathComponent(name)}/${SafePathComponent(version)}/${SafePathComponent(iconName)}`;
+}
+
+function ProjectDownloadUrl(name, version) {
+	return `${PublicBaseUrl()}/${SafePathComponent(name)}/${SafePathComponent(version)}/project.zip`;
+}
+
+function PublicProjectFeed() {
+	const manifest = ReadManifest("public");
+
+	return Object.entries(manifest).flatMap(([name, entry]) => {
+		const latestVersion = LatestVersionEntry(entry);
+		if (!latestVersion) {
+			return [];
+		}
+
+		try {
+			const metadata = ReadProjectMetadata(name, latestVersion.id);
+			const version = metadata.version || latestVersion.id;
+
+			return [{
+				id: `${name}@${version}`,
+				name: metadata.name || name,
+				version: version,
+				description_short: metadata.description_short,
+				description_long: metadata.description_long,
+				authors: metadata.authors || [],
+				category: metadata.category,
+				platform: metadata.platform,
+				timestamp: metadata.timestamp,
+				forum_link: metadata.forum_link || (entry.topicId ? `https://talk.codea.io/t/${entry.topicId}` : null),
+				icon_url: ProjectIconUrl(name, latestVersion.id, metadata),
+				download_url: ProjectDownloadUrl(name, latestVersion.id)
+			}];
+		} catch (err) {
+			console.error(`Skipping ${name}@${latestVersion.id}: ${err.message}`);
+			return [];
+		}
+	}).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
 }
 
 function IsValidMetadata(metadata) {
@@ -57,7 +131,7 @@ function IsValidMetadata(metadata) {
 	}
 
 	// Check additional requirements
-	if (metadata.name > 32) {
+	if (metadata.name.length > 32) {
 		return [ false, `name must be <32 characters.` ];
 	}
 
@@ -69,7 +143,7 @@ function IsValidMetadata(metadata) {
 		return [ false, `version must contain ascii characters only.` ];
 	}
 
-	if (metadata.description_short > 40) {
+	if (metadata.description_short.length > 40) {
 		return [ false, `description_short must be <40 characters.` ];
 	}
 
@@ -127,7 +201,7 @@ async function OnSubmit(metadata) {
 	// Don't add it to the public manifest.
 
 	// Replace unicode quotes in the project title. 
-	metadata.name
+	metadata.name = metadata.name
 		.replace(/[\u2018\u2019]/g, "'")
 		.replace(/[\u201C\u201D]/g, '"');
 
@@ -366,6 +440,7 @@ async function OnWebhook(payload) {
 }
 
 export default {
+	PublicProjectFeed: PublicProjectFeed,
 	IsValidMetadata: IsValidMetadata,
 	IsExistingVersion: IsExistingVersion,
 	IsExistingSubmission: IsExistingSubmission,

@@ -11,5 +11,6 @@ services:
             # 100MB
             - MAX_FILESIZE=104857600
         volumes:
-            - ./app/repo:/app/repo:rw
+            - ./repo:/app/repo:rw
+            - ./runtime:/app/runtime:ro
         restart: always

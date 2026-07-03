@@ -39,6 +39,18 @@ app.use(express.urlencoded({ extended: true })); // for parsing application/x-ww
 
 // TODO: Add basic logging middleware to track API calls.
 
+// Public project feed API
+app.get('/api/projects', function(req, res) {
+	try {
+		res.send({
+			projects: backend.PublicProjectFeed()
+		});
+	} catch (err) {
+		console.error(err);
+		res.status(500).end("Failed to build project feed.");
+	}
+});
+
 // File upload API
 app.post('/api/upload', upload.single('file'), function(req,res){
 	if (req.file) {
@@ -90,6 +102,10 @@ app.post('/api/submit', express.json(), function(req, res) {
 	backend.OnSubmit(metadata);
 	res.end();
 })
+
+app.use('/api/runtime', express.static('runtime', {
+	'lastModified': false
+}), serveIndex(__dirname + '/runtime', { 'icons': true }));
 
 app.use('/', express.static('repo', {
 	'lastModified': false
