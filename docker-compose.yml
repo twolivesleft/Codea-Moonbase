@@ -1,15 +1,16 @@
-version: '3'
 services:
     moonbase:
-        build: ./app
-        environment:
-            # MoonbaseOverseer API Key (Codea Forum Key)
-            - DISCOURSE_API_KEY=
-            - DISCOURSE_USERNAME=MoonbaseOverseer
-            - DISCOURSE_WEBHOOK_SECRET=
-            - HOST=moonbase.codea.io
-            # 100MB
-            - MAX_FILESIZE=104857600
+        build: .
+        env_file:
+            - .env
         volumes:
-            - ./app/repo:/app/repo:rw
-        restart: always
+            - ./pb_public:/pb/pb_public
+            - ./pb_migrations:/pb/pb_migrations
+            - ./pb_data:/pb/pb_data
+            - ./pb_hooks:/pb/pb_hooks
+        restart: unless-stopped
+
+networks:
+    default:
+        name: npm_internal
+        external: true

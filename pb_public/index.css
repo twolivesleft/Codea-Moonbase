@@ -1,0 +1,243 @@
+.FlexContainer {
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: center;
+}
+
+.NewsEntry {
+	width: 100%;
+	height: 300px;
+	overflow: hidden;
+	margin: 0 5px 10px 5px; 
+	border-radius: 16px; 
+	position: relative;
+}
+
+@media only screen and (min-width: 768px) {
+	.NewsEntry.stagger-small {
+		width: 42%;
+	}
+	.NewsEntry.stagger-large {
+		width: 55%;
+	}
+}
+
+.NewsEntry .banner {
+	height: 240px;
+	width: 100%;
+	object-fit: cover;
+}
+
+.NewsEntry .banner:hover {
+	filter: brightness(0.8);
+}
+
+.NewsEntry .banner:active {
+	filter: brightness(0.7);
+}
+
+.NewsEntry .info {
+	position: absolute;
+	background: rgb(32, 32, 32);
+	color: #f1f1f1;
+	width: 100%;
+	height: 60px;
+	bottom: 0px;
+}
+
+.NewsEntry .icon {
+	position: absolute;
+	bottom: 5px;
+	left: 5px;
+	width: 50px;
+	height: 50px;
+	object-fit: fill;
+	border-radius: 11px;
+}
+
+.NewsEntry .title {
+	position: absolute;
+	bottom: 30px;
+	left: 60px;
+	margin: 0;
+	color: rgb(230, 230, 230);
+	font-size: 18px;
+}
+
+.NewsEntry .desc {
+	position: absolute;
+	bottom: 10px;
+	left: 60px;
+	margin: 0;
+	color: rgb(230, 230, 230);
+	font-size: 16px;
+}
+
+@media only screen and (min-width: 768px) {
+ 	.NewsEntry .title {
+		font-size: 22px;
+		bottom: 28px;
+	}
+
+	.NewsEntry .desc {
+		font-size: 18px;
+		bottom: 7px;
+	}
+}
+
+.NewsEntry .button {
+	position: absolute;
+	bottom: 7px;
+	right: 5px;
+	padding: 0;
+	margin: 0;
+	height: 24px;
+	border-radius: 11px;
+	color: rgb(0, 137, 255);
+	background-color: rgb(48, 48, 48);
+	font-size: 18px;
+}
+
+.NewsEntry .button:hover {
+	background-color: rgb(96, 96, 96);
+}
+
+.NewsEntry .button:active {
+	background-color: rgb(128, 128, 128);
+}
+
+.NewsEntry .message {
+	position: absolute;
+	bottom: 32px;
+	right: 10px;
+	margin: 0;
+	color: rgb(230, 230, 230);
+	font-size: 18px;
+}
+
+.NewsEntry div .title {
+	display: block; 
+	margin: 12px 0 0 0;
+}
+
+.NewsEntry div br {
+	height: 0px;
+	margin: 0 0 0 0;
+}
+
+.NewsEntry div .desc {
+	display: block;
+	font-size: 20px; 
+}
+
+.NewsEntry button {
+	display: block;
+	float: right;
+	margin-right: 15px;
+	margin-top: 25px; 
+	background-color: #A0A0FF;
+	border-radius: 16px; 
+	border: none; 
+	color: white;
+	height: 30px;
+	width: 90px;
+	font-size: 16px; 
+}
+
+.ListEntry {
+	width: 100%;
+	height: 70px;
+	overflow: hidden;
+	margin: 0 5px 10px 5px;
+	border-radius: 24px; 
+	position: relative;
+	background: rgb(32, 32, 32);
+	color: #f1f1f1;
+}
+
+@media only screen and (min-width: 768px) {
+ 	.ListEntry {
+		width: calc(50% - 10px);
+	}
+}
+
+.ListEntry .icon {
+	position: absolute;
+	bottom: 5px;
+	left: 5px;
+	width: 60px;
+	height: 60px;
+	object-fit: fill;
+	border-radius: 19px;
+}
+
+.ListEntry .title {
+	position: absolute;
+	bottom: 35px;
+	left: 70px;
+	margin: 0;
+	color: rgb(230, 230, 230);
+	font-size: 18px;
+}
+
+.ListEntry .desc {
+	position: absolute;
+	bottom: 15px;
+	left: 70px;
+	margin: 0;
+	color: rgb(230, 230, 230);
+	font-size: 16px;
+}
+
+.ListEntry .button {
+	position: absolute;
+	vertical-align: middle;
+	right: 10px;
+	padding: 0;
+	margin: 0;
+	height: auto;
+	border-radius: 11px;
+	color: rgb(0, 137, 255);
+	background-color: rgb(48, 48, 48);
+	font-size: 18px;
+	text-align: center;
+	top: 50%;
+	transform: translate(0, -50%);
+}
+
+.ListEntry .button:hover {
+	background-color: rgb(96, 96, 96);
+}
+
+.ListEntry .button:active {
+	background-color: rgb(128, 128, 128);
+}
+
+.ListEntry div .title {
+	display: block; 
+	margin: 12px 0 0 0;
+}
+
+.ListEntry div br {
+	height: 0px;
+	margin: 0 0 0 0;
+}
+
+.ListEntry div .desc {
+	display: block;
+	font-size: 20px; 
+}
+
+.ListEntry button {
+	display: block;
+	float: right;
+	margin-right: 15px;
+	margin-top: 25px; 
+	background-color: #A0A0FF;
+	border-radius: 16px; 
+	border: none; 
+	color: white;
+	height: 30px;
+	width: 90px;
+	font-size: 16px; 
+}

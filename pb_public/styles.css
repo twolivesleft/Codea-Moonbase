@@ -1,0 +1,148 @@
+body {
+	background-color: #000;
+	font-size:28px;
+	font-family: Arial, Helvetica, sans-serif;
+	color: #f2f2f2;
+	padding: 0;
+	margin: 0;
+}
+
+p {
+	color: #f2f2f2;
+}
+
+* {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.header {
+	/* Positioning */
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	padding: 0;
+	padding-top: env(safe-area-inset-top, 0px);
+	margin: 0;
+	border: 0;
+
+	/* Colouring */
+	background-color: rgba(255, 255, 255, 0.1);
+	-webkit-backdrop-filter: blur(24px) brightness(0.5);
+	backdrop-filter: blur(24px) brightness(0.5);
+	z-index: 1000;
+
+	/* Flex */
+	display: flex;
+	justify-content: space-between;
+	gap: 5px;
+}
+
+.header * {
+	height: 36px; 
+	margin-top: 5px;
+	margin-bottom: 5px;
+	border: 0;
+	border-radius: 18px;
+	background-color: rgba(255, 255, 255, 0.2);
+}
+
+.header *:first-child {
+	margin-left: 5px;
+}
+
+.header *:last-child {
+	margin-right: 5px;
+}
+
+.header *:hover {
+	background-color: rgba(255, 255, 255, 0.4);
+}
+
+.header a {
+	padding: 0 8px 0 8px;
+	line-height: 36px;
+	font-size: 24px;
+	color: #f2f2f2;
+	vertical-align: middle;
+}
+
+.header a.icon {
+	width: 36px;
+	color: #f2f2f2;
+	padding: 0;
+	line-height: 32px;
+}
+
+.header input {
+	width: 100px;
+	height: 36px;
+	flex-grow: 100;
+	font-size: 24px; 
+	color: #f2f2f2;
+	border: 0;
+}
+
+.header input::placeholder {
+	color: #c0c0c0;
+}
+
+.footer {
+	position: fixed;
+	overflow: hidden;
+	width: 100%;
+	bottom: 0;
+	left: 0;
+	background-color: rgba(255, 255, 255, 0.1);
+	-webkit-backdrop-filter: blur(24px) brightness(0.5);
+	backdrop-filter: blur(24px) brightness(0.5);
+	text-align: center;
+	z-index: 1000;
+
+	/* Flex stuff */
+	display: flex;
+	flex-flow: row; 
+	justify-content: space-evenly;
+}
+
+.footer a {
+	width: 18%;
+	padding: 0;
+	margin-top: 5px;
+	margin-bottom: calc(env(safe-area-inset-bottom, 0px) + 5px);
+	border-radius: 12px;
+	transition: 0.15s;
+}
+
+.footer a p {
+	margin: 2px 0 2px 0;
+	padding: 0;
+}
+
+.footer a:hover {
+	background: rgb(96, 168, 230);
+}
+
+.footer a.selected {
+	background: rgb(0, 126, 255);
+}
+
+.WR_button {
+	color: #f2f2f2;
+	text-align: center;
+	padding: 7px 16px;
+	text-decoration: none;
+	font-size:18px;
+}
+
+#content {
+	margin: 0;
+	padding: 60px 0 calc(65px + env(safe-area-inset-bottom, 0px)) 0;
+	width: 100vw;
+	z-index: 10;
+}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+	<link rel="stylesheet" href="styles.css">
+	<link rel="stylesheet" href="index.css">
+	<script src="fuzzy-min.js"></script>
+</head>
+<body>
+	<div class="header">
+		<a href="./index.html" class="WR_button left icon">&#127968;</a>
+		<input id="search" type="search" placeholder="Search projects..." class="left"></input>
+		<a onclick="onSubmit()" class="WR_button right">Submit</a>
+	</div>
+	<div id="content"></div>
+	<div class="footer">
+		<a onclick="onTab(event, 'news')" class="WR_button" id="defaultTab">
+			<p>&#x1F4C5</p>
+			<p>Today</p>
+		</a>
+		<a onclick="onTab(event, 'game')" class="WR_button">
+			<p>&#x1F3AE</p>
+			<p>Games</p>
+		</a>
+		<a onclick="onTab(event, 'application')" class="WR_button">
+			<p>&#x1F6E0</p>
+			<p>Apps</p>
+		</a>
+		<a onclick="onTab(event, 'library')" class="WR_button">
+			<p>&#x1F4DA</p>
+			<p>Libs</p>
+		</a>
+		<a onclick="onTab(event, 'asset')" class="WR_button">
+			<p>&#x1F3A8</p>
+			<p>Assets</p>
+		</a>
+	</div>
+	<script src="core.js"></script>
+	<script src="index.js"></script>
+</body>
+</html>

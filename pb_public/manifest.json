@@ -1,0 +1,15 @@
+{
+  "name": "Codea WebRepo",
+  "short_name": "WebRepo",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#fff",
+  "description": "Codea WebRepo 3.0",
+  "icons": [
+    {
+      "src": "https://codeawebrepo.co.uk/WebRepo/Icon@2x.png",
+      "sizes": "48x48",
+      "type": "image/png"
+    }
+  ]
+}
